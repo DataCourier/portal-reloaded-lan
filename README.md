@@ -17,6 +17,8 @@ Both files are the same script. The file name decides the mode, so renaming a co
 
 Steam still has to be running and logged in on both PCs.
 
+If the second PC starts hosting too instead of joining, close the game on both PCs and start the launcher on the other PC first (swap who hosts). A fix for this is being tested.
+
 Windows may warn about a downloaded file the first time ("Windows protected your PC"). Click **More info**, then **Run anyway**.
 
 ## Options
@@ -42,4 +44,4 @@ An explicit `-Mode` overrides the file name.
 ## Tested
 On a single PC (2026-10-25): finding the game, hosting, the host staying up, and being found on the network all work.
 The single-file `.cmd` was run on Windows 10 from a folder with a space in its path, with LF line endings as published. Both host mode and "no host found" work, and options are passed through.
-Joining from a second PC and lasting past 2 minutes have not been tested yet.
+Two PCs on a home network (2026-10-25): connected for 30+ minutes across three maps with no drop. Over Steam, the same two PCs dropped after about 2 minutes.

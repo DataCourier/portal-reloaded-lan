@@ -34,4 +34,5 @@ Run the file from a command prompt with options, or make a shortcut to it and ad
 
 ## Tested
 On a single PC (2026-10-25): finding the game, hosting, the host staying up, and being found on the network all work.
+The single-file `.cmd` was run on Windows 10 from a folder with a space in its path, with LF line endings as published. Both host mode and "no host found" work, and options are passed through.
 Joining from a second PC and lasting past 2 minutes have not been tested yet.

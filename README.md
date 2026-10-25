@@ -19,7 +19,8 @@ Windows may warn about a downloaded file the first time ("Windows protected your
 Run the file from a command prompt with options, or make a shortcut to it and add them to the shortcut's target:
 - `-Mode Host`: always host
 - `-Mode Join -HostIP 192.168.0.98`: join a specific PC without searching
-- `-Map mp_coop_pr_cubes`: host a different map
+- `-Mode Split`: split-screen co-op on this one PC (player 2 needs a controller). Achievements are off in split screen.
+- `-Map mp_coop_pr_cubes`: host a different map (also works with `-Mode Split`)
 
 ## What it does
 - The `.cmd` is a batch/PowerShell hybrid: the first few lines start PowerShell, which runs the rest of the same file. Nothing else to install.

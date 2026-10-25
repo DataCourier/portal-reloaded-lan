@@ -16,9 +16,10 @@ directly over the home network with sv_lan 1, so Steam never carries the game.
 
 Run it on both PCs. The first PC to run it hosts; the second finds the host on
 the network and joins. Override with -Mode Host / -Mode Join [-HostIP x.x.x.x].
+-Mode Split plays split-screen co-op on this one PC (player 2 needs a controller).
 #>
 param(
-    [ValidateSet('Auto', 'Host', 'Join')][string]$Mode = 'Auto',
+    [ValidateSet('Auto', 'Host', 'Join', 'Split')][string]$Mode = 'Auto',
     [string]$HostIP,
     [string]$Map = 'mp_coop_start'
 )
@@ -111,7 +112,9 @@ if (Get-Process portal2 -ErrorAction SilentlyContinue) {
     Start-Sleep 3
 }
 
-if ($Mode -eq 'Join' -and $HostIP) {
+if ($Mode -eq 'Split') {
+    # Both players are on this PC, so there is nobody to look for.
+} elseif ($Mode -eq 'Join' -and $HostIP) {
     $target = $HostIP
 } else {
     Write-Host 'Looking for a Portal Reloaded host on the network...'
@@ -124,7 +127,11 @@ if ($Mode -eq 'Join' -and $HostIP) {
     }
 }
 
-if ($Mode -eq 'Host' -or -not $target) {
+if ($Mode -eq 'Split') {
+    Start-Portal $info @('+sv_lan', '1', '+ss_map', $Map)
+    Write-Host ''
+    Write-Host 'SPLIT SCREEN on this PC. Player 2 plays with a controller.' -ForegroundColor Cyan
+} elseif ($Mode -eq 'Host' -or -not $target) {
     if (-not (Test-FirewallRule (Join-Path $info.Game 'portal2.exe'))) {
         Write-Host 'Windows Firewall has no rule letting the other PC reach Portal on this PC.' -ForegroundColor Yellow
         $a = Read-Host 'Add one now? (asks for admin) [Y/n]'

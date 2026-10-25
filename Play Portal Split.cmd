@@ -61,13 +61,29 @@ function Get-BroadcastAddresses {
     $out | Select-Object -Unique
 }
 
-# Asks the network for Source servers (A2S_INFO) and returns Portal Reloaded ones.
-function Find-Hosts([int]$TimeoutMs = 3000) {
+# Every address in each small local subnet (/22 or smaller), for when broadcast replies get dropped.
+function Get-SweepTargets {
+    foreach ($a in Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue) {
+        if ($a.IPAddress -like '127.*' -or $a.IPAddress -like '169.254.*' -or $a.PrefixLength -lt 22 -or $a.PrefixLength -ge 31) { continue }
+        $b = [Net.IPAddress]::Parse($a.IPAddress).GetAddressBytes(); [Array]::Reverse($b)
+        $ip = [BitConverter]::ToUInt32($b, 0)
+        $size = [uint32][Math]::Pow(2, 32 - $a.PrefixLength)
+        $net = $ip - ($ip % $size)
+        for ($i = 1; $i -lt $size - 1; $i++) {
+            if ($net + $i -eq $ip) { continue }
+            $x = [BitConverter]::GetBytes([uint32]($net + $i)); [Array]::Reverse($x)
+            (New-Object Net.IPAddress (, $x)).ToString()
+        }
+    }
+}
+
+# Asks the given addresses for Source servers (A2S_INFO) and returns Portal Reloaded ones.
+function Find-Hosts([string[]]$Targets, [int]$TimeoutMs = 3000) {
     $udp = New-Object Net.Sockets.UdpClient
     $udp.EnableBroadcast = $true
     $udp.Client.ReceiveTimeout = 500
     $query = [byte[]](0xFF, 0xFF, 0xFF, 0xFF, 0x54) + [Text.Encoding]::ASCII.GetBytes('Source Engine Query') + [byte[]](0)
-    foreach ($b in Get-BroadcastAddresses) {
+    foreach ($b in $Targets) {
         try { [void]$udp.Send($query, $query.Length, (New-Object Net.IPEndPoint ([Net.IPAddress]::Parse($b)), 27015)) } catch {}
     }
     $found = @{}
@@ -120,7 +136,11 @@ if ($Mode -eq 'Split') {
     $target = $HostIP
 } else {
     Write-Host 'Looking for a Portal Reloaded host on the network...'
-    $hosts = @(Find-Hosts)
+    $hosts = @(Find-Hosts (Get-BroadcastAddresses))
+    if ($hosts.Count -eq 0) {
+        # Some firewalls drop replies to a broadcast but allow replies to a direct query.
+        $hosts = @(Find-Hosts @(Get-SweepTargets) 1500)
+    }
     if ($hosts.Count -gt 0) {
         $target = $hosts[0].IP
         Write-Host "Found host $($hosts[0].Name) at $target (map $($hosts[0].Map))" -ForegroundColor Green

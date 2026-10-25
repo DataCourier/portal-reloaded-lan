@@ -4,9 +4,13 @@ Portal Reloaded co-op over Steam drops after about 2 minutes with a "connection 
 ([Valve bug #471](https://github.com/ValveSoftware/portal2/issues/471), unfixed since 2023).
 This launcher connects two PCs on the same home network directly (`sv_lan 1`), so Steam never handles the connection.
 
-It is a single file: **[Play Portal LAN.cmd](Play%20Portal%20LAN.cmd)**. Put it anywhere (the desktop is fine) and double-click it. It finds the game and the other PC by itself.
+Download one file and double-click it. It can go anywhere, like the desktop or Downloads, and needs no setup:
+- **Play Portal LAN.cmd**: two PCs on the same home network. It finds the game and the other PC by itself.
+- **Play Portal Split.cmd**: split screen on one PC. Player 2 needs a controller. Achievements are off in split screen.
 
-## How to play
+Both files are the same script. The file name decides the mode, so renaming a copy (for example "Play Portal Split (1).cmd" from a second download) still works.
+
+## How to play over LAN
 1. Download **Play Portal LAN.cmd** onto both PCs.
 2. On the first PC, double-click **Play Portal LAN.cmd**. Nobody is hosting yet, so this PC becomes the host and loads the co-op hub.
 3. When the host's map has loaded, double-click **Play Portal LAN.cmd** on the second PC. It finds the host on the network and joins.
@@ -19,8 +23,10 @@ Windows may warn about a downloaded file the first time ("Windows protected your
 Run the file from a command prompt with options, or make a shortcut to it and add them to the shortcut's target:
 - `-Mode Host`: always host
 - `-Mode Join -HostIP 192.168.0.98`: join a specific PC without searching
-- `-Mode Split`: split-screen co-op on this one PC (player 2 needs a controller). Achievements are off in split screen.
-- `-Map mp_coop_pr_cubes`: host a different map (also works with `-Mode Split`)
+- `-Mode Split`: split screen, the same as running **Play Portal Split.cmd**
+- `-Map mp_coop_pr_cubes`: host a different map (also works for split screen)
+
+An explicit `-Mode` overrides the file name.
 
 ## What it does
 - The `.cmd` is a batch/PowerShell hybrid: the first few lines start PowerShell, which runs the rest of the same file. Nothing else to install.

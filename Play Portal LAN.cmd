@@ -17,6 +17,7 @@ directly over the home network with sv_lan 1, so Steam never carries the game.
 Run it on both PCs. The first PC to run it hosts; the second finds the host on
 the network and joins. Override with -Mode Host / -Mode Join [-HostIP x.x.x.x].
 -Mode Split plays split-screen co-op on this one PC (player 2 needs a controller).
+The same file saved with "Split" in its name starts in split-screen mode.
 #>
 param(
     [ValidateSet('Auto', 'Host', 'Join', 'Split')][string]$Mode = 'Auto',
@@ -26,6 +27,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $AppId = 1255980
 trap { Write-Host $_.Exception.Message -ForegroundColor Red; exit 1 }
+if (-not $PSBoundParameters.ContainsKey('Mode') -and (Split-Path -Leaf "$env:PORTAL_LAN_SELF") -match 'split') { $Mode = 'Split' }
 
 function Find-Game {
     $steam = (Get-ItemProperty 'HKCU:\Software\Valve\Steam' -ErrorAction SilentlyContinue).SteamPath

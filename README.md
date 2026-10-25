@@ -17,8 +17,6 @@ Both files are the same script. The file name decides the mode, so renaming a co
 
 Steam still has to be running and logged in on both PCs.
 
-If the second PC starts hosting too instead of joining, close the game on both PCs and start the launcher on the other PC first (swap who hosts). A fix for this is being tested.
-
 Windows may warn about a downloaded file the first time ("Windows protected your PC"). Click **More info**, then **Run anyway**.
 
 ## Options
@@ -34,6 +32,7 @@ An explicit `-Mode` overrides the file name.
 - The `.cmd` is a batch/PowerShell hybrid: the first few lines start PowerShell, which runs the rest of the same file. Nothing else to install.
 - Finds the Portal Reloaded install through Steam's registry key and library folders.
 - Looks for a host by sending the standard Source server query (A2S_INFO) as a broadcast on UDP 27015.
+  If nothing answers (some firewalls drop replies to a broadcast), it asks every address on the local network directly.
 - Host: launches with `+sv_lan 1 +map mp_coop_start`, plus `sv_cheats 1` and long `mp_wait_for_other_player_*` timeouts.
   Without these, the host quits about 10 seconds after loading if no partner has joined.
   Side effect: achievements are disabled for that session.
@@ -45,3 +44,4 @@ An explicit `-Mode` overrides the file name.
 On a single PC (2026-10-25): finding the game, hosting, the host staying up, and being found on the network all work.
 The single-file `.cmd` was run on Windows 10 from a folder with a space in its path, with LF line endings as published. Both host mode and "no host found" work, and options are passed through.
 Two PCs on a home network (2026-10-25): connected for 30+ minutes across three maps with no drop. Over Steam, the same two PCs dropped after about 2 minutes.
+Finding the host works in both directions, including from a PC whose firewall drops broadcast replies (it falls back to asking each address directly).

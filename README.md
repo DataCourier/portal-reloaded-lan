@@ -5,13 +5,13 @@ Portal Reloaded co-op over Steam drops after about 2 minutes with a "connection 
 This launcher connects two PCs on the same home network directly (`sv_lan 1`), so Steam never handles the connection.
 
 Download one file and double-click it. It can go anywhere, like the desktop or Downloads, and needs no setup:
-- **Play Portal LAN.cmd**: two PCs on the same home network. It finds the game and the other PC by itself.
-- **Play Portal Split.cmd**: split screen on one PC. Player 2 needs a controller. Achievements are off in split screen.
+- **[Download Play Portal LAN.cmd](https://github.com/DataCourier/portal-reloaded-lan/releases/latest/download/Play.Portal.LAN.cmd)**: two PCs on the same home network. It finds the game and the other PC by itself.
+- **[Download Play Portal Split.cmd](https://github.com/DataCourier/portal-reloaded-lan/releases/latest/download/Play.Portal.Split.cmd)**: split screen on one PC. Player 2 needs a controller. Achievements are off in split screen.
 
-Both files are the same script. The file name decides the mode, so renaming a copy (for example "Play Portal Split (1).cmd" from a second download) still works.
+Both files are the same script. The file name decides the mode, so renaming a copy (for example "Play Portal Split (1).cmd" from a second download) still works. (GitHub saves them with dots instead of spaces, like "Play.Portal.LAN.cmd". That's fine too.)
 
 ## How to play over LAN
-1. Download **Play Portal LAN.cmd** onto both PCs.
+1. [Download **Play Portal LAN.cmd**](https://github.com/DataCourier/portal-reloaded-lan/releases/latest/download/Play.Portal.LAN.cmd) onto both PCs.
 2. On the first PC, double-click **Play Portal LAN.cmd**. Nobody is hosting yet, so this PC becomes the host and loads the co-op hub.
 3. When the host's map has loaded, double-click **Play Portal LAN.cmd** on the second PC. It finds the host on the network and joins.
 
